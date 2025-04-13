@@ -1,3 +1,4 @@
+from app.api.v1.api import api_router
 from fastapi import APIRouter
 from app.api.v1.endpoints import clients, sessions
 
