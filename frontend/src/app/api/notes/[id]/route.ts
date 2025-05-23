@@ -1,5 +1,5 @@
 import { prisma } from '../../../../lib/prisma';
-import { generateNote } from '../../../../lib/ai';
+import { generateNote, DEFAULT_PROMPT } from '../../../../lib/ai';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
@@ -20,12 +20,25 @@ export async function PATCH(req: NextRequest) {
   console.log('Extracted id for regeneration:', id);
   if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 });
   try {
+    // Parse optional body
+    let body: any = {};
+    try { body = await req.json(); } catch {}
+    // If updating title only
+    if (body.title) {
+      const updatedTitle = await prisma.sessionNote.update({
+        where: { id },
+        data: { title: body.title },
+      });
+      return NextResponse.json(updatedTitle);
+    }
+    // Otherwise handle regeneration
     console.log('Finding note with id:', id);
     const note = await prisma.sessionNote.findUnique({ where: { id } });
     console.log('Found note:', note);
     if (!note) return NextResponse.json({ error: 'Not found' }, { status: 404 });
     console.log('Regenerating note for rawText:', note.rawText);
-    const regenerated = await generateNote(note.rawText);
+    const promptTemplate = body.prompt || DEFAULT_PROMPT;
+    const regenerated = await generateNote(note.rawText, promptTemplate);
     console.log('Regenerated note:', regenerated);
     const updated = await prisma.sessionNote.update({
       where: { id },

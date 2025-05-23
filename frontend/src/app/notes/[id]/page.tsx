@@ -2,6 +2,8 @@
 import useSWR from "swr";
 import { useState } from "react";
 import { useParams } from "next/navigation";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
@@ -33,11 +35,11 @@ export default function NoteDetailPage() {
     <div className="max-w-xl mx-auto mt-10 p-4 border rounded">
       <h1 className="text-2xl mb-4 font-bold">Session Note</h1>
       <div className="mb-2 text-gray-600 text-xs">Created: {new Date(note.createdAt).toLocaleString()}</div>
-      <textarea
-        className="w-full border rounded p-2 min-h-[120px] mb-2"
-        value={note.generatedNote || ""}
-        readOnly
-      />
+      <div className="w-full border rounded p-2 min-h-[120px] mb-2 bg-gray-100 text-black">
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {note.generatedNote || ""}
+        </ReactMarkdown>
+      </div>
       <div className="flex gap-2">
         <button
           onClick={handleRegenerate}

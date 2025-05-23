@@ -15,5 +15,6 @@ model SessionNote {
   id            String   @id @default(uuid())
   rawText       String
   generatedNote String?
+  title         String   @default("Session Note")
   createdAt     DateTime @default(now())
 }

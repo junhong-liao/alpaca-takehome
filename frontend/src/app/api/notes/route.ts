@@ -1,6 +1,6 @@
 import { prisma } from '../../../lib/prisma';
 import { NoteInput } from '../../../lib/schemas';
-import { generateNote } from '../../../lib/ai';
+import { generateNote, DEFAULT_PROMPT } from '../../../lib/ai';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -11,10 +11,15 @@ export async function POST(req: NextRequest) {
     console.log('Parsed request body:', body);
     const input = NoteInput.parse(body);
     console.log('Validated input:', input);
-    const generated = await generateNote(input.rawText);
+    const promptTemplate = input.prompt || DEFAULT_PROMPT;
+    const generated = await generateNote(input.rawText, promptTemplate);
     console.log('Generated note:', generated);
     const note = await prisma.sessionNote.create({
-      data: { rawText: input.rawText, generatedNote: generated },
+      data: {
+        rawText: input.rawText,
+        generatedNote: generated,
+        title: input.title || 'Session Note',
+      },
     });
     console.log('Created note in DB with id:', note.id);
     return NextResponse.json(note, { status: 201 });

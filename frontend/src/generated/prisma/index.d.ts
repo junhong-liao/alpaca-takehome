@@ -883,6 +883,7 @@ export namespace Prisma {
     id: string | null
     rawText: string | null
     generatedNote: string | null
+    title: string | null
     createdAt: Date | null
   }
 
@@ -890,6 +891,7 @@ export namespace Prisma {
     id: string | null
     rawText: string | null
     generatedNote: string | null
+    title: string | null
     createdAt: Date | null
   }
 
@@ -897,6 +899,7 @@ export namespace Prisma {
     id: number
     rawText: number
     generatedNote: number
+    title: number
     createdAt: number
     _all: number
   }
@@ -906,6 +909,7 @@ export namespace Prisma {
     id?: true
     rawText?: true
     generatedNote?: true
+    title?: true
     createdAt?: true
   }
 
@@ -913,6 +917,7 @@ export namespace Prisma {
     id?: true
     rawText?: true
     generatedNote?: true
+    title?: true
     createdAt?: true
   }
 
@@ -920,6 +925,7 @@ export namespace Prisma {
     id?: true
     rawText?: true
     generatedNote?: true
+    title?: true
     createdAt?: true
     _all?: true
   }
@@ -1000,6 +1006,7 @@ export namespace Prisma {
     id: string
     rawText: string
     generatedNote: string | null
+    title: string
     createdAt: Date
     _count: SessionNoteCountAggregateOutputType | null
     _min: SessionNoteMinAggregateOutputType | null
@@ -1024,6 +1031,7 @@ export namespace Prisma {
     id?: boolean
     rawText?: boolean
     generatedNote?: boolean
+    title?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["sessionNote"]>
 
@@ -1031,6 +1039,7 @@ export namespace Prisma {
     id?: boolean
     rawText?: boolean
     generatedNote?: boolean
+    title?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["sessionNote"]>
 
@@ -1038,6 +1047,7 @@ export namespace Prisma {
     id?: boolean
     rawText?: boolean
     generatedNote?: boolean
+    title?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["sessionNote"]>
 
@@ -1045,10 +1055,11 @@ export namespace Prisma {
     id?: boolean
     rawText?: boolean
     generatedNote?: boolean
+    title?: boolean
     createdAt?: boolean
   }
 
-  export type SessionNoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "rawText" | "generatedNote" | "createdAt", ExtArgs["result"]["sessionNote"]>
+  export type SessionNoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "rawText" | "generatedNote" | "title" | "createdAt", ExtArgs["result"]["sessionNote"]>
 
   export type $SessionNotePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "SessionNote"
@@ -1057,6 +1068,7 @@ export namespace Prisma {
       id: string
       rawText: string
       generatedNote: string | null
+      title: string
       createdAt: Date
     }, ExtArgs["result"]["sessionNote"]>
     composites: {}
@@ -1484,6 +1496,7 @@ export namespace Prisma {
     readonly id: FieldRef<"SessionNote", 'String'>
     readonly rawText: FieldRef<"SessionNote", 'String'>
     readonly generatedNote: FieldRef<"SessionNote", 'String'>
+    readonly title: FieldRef<"SessionNote", 'String'>
     readonly createdAt: FieldRef<"SessionNote", 'DateTime'>
   }
     
@@ -1864,6 +1877,7 @@ export namespace Prisma {
     id: 'id',
     rawText: 'rawText',
     generatedNote: 'generatedNote',
+    title: 'title',
     createdAt: 'createdAt'
   };
 
@@ -1922,6 +1936,7 @@ export namespace Prisma {
     id?: StringFilter<"SessionNote"> | string
     rawText?: StringFilter<"SessionNote"> | string
     generatedNote?: StringNullableFilter<"SessionNote"> | string | null
+    title?: StringFilter<"SessionNote"> | string
     createdAt?: DateTimeFilter<"SessionNote"> | Date | string
   }
 
@@ -1929,6 +1944,7 @@ export namespace Prisma {
     id?: SortOrder
     rawText?: SortOrder
     generatedNote?: SortOrderInput | SortOrder
+    title?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -1939,6 +1955,7 @@ export namespace Prisma {
     NOT?: SessionNoteWhereInput | SessionNoteWhereInput[]
     rawText?: StringFilter<"SessionNote"> | string
     generatedNote?: StringNullableFilter<"SessionNote"> | string | null
+    title?: StringFilter<"SessionNote"> | string
     createdAt?: DateTimeFilter<"SessionNote"> | Date | string
   }, "id">
 
@@ -1946,6 +1963,7 @@ export namespace Prisma {
     id?: SortOrder
     rawText?: SortOrder
     generatedNote?: SortOrderInput | SortOrder
+    title?: SortOrder
     createdAt?: SortOrder
     _count?: SessionNoteCountOrderByAggregateInput
     _max?: SessionNoteMaxOrderByAggregateInput
@@ -1959,6 +1977,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"SessionNote"> | string
     rawText?: StringWithAggregatesFilter<"SessionNote"> | string
     generatedNote?: StringNullableWithAggregatesFilter<"SessionNote"> | string | null
+    title?: StringWithAggregatesFilter<"SessionNote"> | string
     createdAt?: DateTimeWithAggregatesFilter<"SessionNote"> | Date | string
   }
 
@@ -1966,6 +1985,7 @@ export namespace Prisma {
     id?: string
     rawText: string
     generatedNote?: string | null
+    title?: string
     createdAt?: Date | string
   }
 
@@ -1973,6 +1993,7 @@ export namespace Prisma {
     id?: string
     rawText: string
     generatedNote?: string | null
+    title?: string
     createdAt?: Date | string
   }
 
@@ -1980,6 +2001,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     rawText?: StringFieldUpdateOperationsInput | string
     generatedNote?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -1987,6 +2009,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     rawText?: StringFieldUpdateOperationsInput | string
     generatedNote?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -1994,6 +2017,7 @@ export namespace Prisma {
     id?: string
     rawText: string
     generatedNote?: string | null
+    title?: string
     createdAt?: Date | string
   }
 
@@ -2001,6 +2025,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     rawText?: StringFieldUpdateOperationsInput | string
     generatedNote?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -2008,6 +2033,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     rawText?: StringFieldUpdateOperationsInput | string
     generatedNote?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -2059,6 +2085,7 @@ export namespace Prisma {
     id?: SortOrder
     rawText?: SortOrder
     generatedNote?: SortOrder
+    title?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -2066,6 +2093,7 @@ export namespace Prisma {
     id?: SortOrder
     rawText?: SortOrder
     generatedNote?: SortOrder
+    title?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -2073,6 +2101,7 @@ export namespace Prisma {
     id?: SortOrder
     rawText?: SortOrder
     generatedNote?: SortOrder
+    title?: SortOrder
     createdAt?: SortOrder
   }
 

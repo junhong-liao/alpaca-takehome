@@ -121,6 +121,7 @@ exports.Prisma.SessionNoteScalarFieldEnum = {
   id: 'id',
   rawText: 'rawText',
   generatedNote: 'generatedNote',
+  title: 'title',
   createdAt: 'createdAt'
 };
 
