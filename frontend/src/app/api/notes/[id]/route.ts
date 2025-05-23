@@ -23,6 +23,14 @@ export async function PATCH(req: NextRequest) {
     // Parse optional body
     let body: any = {};
     try { body = await req.json(); } catch {}
+    // If updating generated note directly
+    if (body.generatedNote !== undefined) {
+      const updatedContent = await prisma.sessionNote.update({
+        where: { id },
+        data: { generatedNote: body.generatedNote },
+      });
+      return NextResponse.json(updatedContent);
+    }
     // If updating title only
     if (body.title) {
       const updatedTitle = await prisma.sessionNote.update({

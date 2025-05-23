@@ -1,79 +1,136 @@
-# Alpaca Health Software Engineering Take-Home Project
+# ABA Session Note Generator
 
-### Project Description
+A clinical note transformer built with Next.js, Prisma, and OpenAI GPT-3.5-Turbo. Transform bullet-point ABA session notes into professionally formatted clinical documentation.
 
-Visit this link for details:
-[https://harviio.notion.site/Alpaca-Health-Eng-Take-home-Project-1411bfc50b90803382d4cae01f9bcf18?pvs=4](https://www.notion.so/harviio/ABA-Session-Note-Generator-Take-Home-Project-1411bfc50b90803382d4cae01f9bcf18?pvs=4)
+## Features
 
-## Setup Instructions
+- Create new ABA session notes from raw bullet points
+- View and edit note titles inline
+- Inline editing of AI-generated note content
+- Regenerate AI-generated content with customizable prompt templates
+- Copy note content to clipboard
+- Persistent storage using SQLite via Prisma ORM
+- Markdown rendering with GitHub Flavored Markdown
+- Customizable prompt via the **Template** button in the UI
 
-### Backend Setup (Python 3.11+ required)
+## Tech Stack
 
-```bash
-# Create and activate virtual environment
-python -m venv alpaca_venv
-source alpaca_venv/bin/activate  # or `venv\Scripts\activate` on Windows
+- **Next.js 13** App Router (TypeScript)
+- **React** and **SWR** for data fetching
+- **Prisma** ORM with SQLite database
+- **OpenAI GPT-3.5-Turbo** for note generation
+- **Tailwind CSS** for styling
 
-# Install dependencies
-pip install -r requirements.txt
+## Prerequisites
 
-# Start the server
-fastapi dev main.py
+- Node.js >= 18 and npm >= 8
+- An OpenAI API key
+- (Optional) Python 3.11+ for the legacy health-check server
+
+## Environment Variables
+
+In the `frontend/` directory, create a file named `.env.local` with the following contents:
+
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+DATABASE_URL="file:./dev.db"
 ```
 
-### Frontend Setup (Node.js 18+ required)
+## Setup and Installation
+
+1. **Clone the repository**
+
+   ```bash
+git clone <repository-url>
+cd alpaca-takehome
+```
+
+2. **Install frontend dependencies and generate Prisma client**
+
+   ```bash
+cd frontend
+npm install
+npx prisma generate
+npx prisma db push
+```
+
+## Running in Development
+
+Start the Next.js development server (frontend + API routes):
 
 ```bash
-# Navigate to frontend directory
-cd frontend
-
-# Install dependencies
-npm install
-
-# Start the development server
 npm run dev
 ```
 
-The application will be available at:
+- Frontend and API will be served at: http://localhost:3000
 
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-- API Documentation: http://localhost:8000/docs
+### (Optional) Legacy FastAPI Health-Check Server
 
-## Default Project Structure
+If you wish to run the original Python health-check server:
 
-- `frontend/`: Next.js application
-  - `src/components/`: Reusable React components
-  - `src/app/`: Next.js app router pages
-- `backend/`: FastAPI application
-  - `app/main.py`: API endpoints
+```bash
+cd backend
+python -m venv alpaca_venv
+source alpaca_venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+```
 
-## Development
+Access the health check endpoint at: http://localhost:8000
 
-- Frontend runs on port 3000 with hot reload enabled
-- Backend runs on port 8000 with auto-reload enabled
-- API documentation available at http://localhost:8000/docs
+## API Endpoints
 
-## Submission
+| Method | Endpoint           | Description                                  |
+| ------ | ------------------ | -------------------------------------------- |
+| GET    | `/api/notes`       | List all session notes                       |
+| POST   | `/api/notes`       | Create a new session note                    |
+| PATCH  | `/api/notes/:id`   | Update title, regenerate, or edit note text  |
 
-1. Create a private GitHub repository
-2. Implement your solution
-3. Document any assumptions or trade-offs
-4. Include instructions for running your solution
-5. Send us the repository link
+### POST /api/notes
 
-## Time Expectation
+**Request Body:**
+```json
+{
+  "rawText": "Bullet points here",
+  "title": "Session Note",
+  "prompt": "<custom prompt template>"
+}
+```
 
-- Expected time: 3-4 hours
-- Please don't spend more than 6 hours
+### PATCH /api/notes/:id
 
-## Evaluation Criteria
+- **Regenerate AI content**:
+  ```json
+  { "prompt": "<custom prompt template>" }
+  ```
+- **Update note title**:
+  ```json
+  { "title": "New Title" }
+  ```
+- **Edit generated content manually**:
+  ```json
+  { "generatedNote": "Updated note text" }
+  ```
 
-| Category | Details | Weight |
-|----------|---------|--------|
-| Product sense and scoping | - Final product decisions alignment with requirements<br>- Appropriate deprioritization of non-crucial parts | 10% |
-| Technology selection | - Right tools chosen for the job | 10% |
-| Technical Level | - Well-organized and intuitive code structure<br>- Modular code (e.g., React components used)<br>- Proper use of React hooks<br>- Good state management<br>- Correct use of useEffect hooks | 40% |
-| Craft and Quality | - Usable and intuitive UI/UX<br>- Presence and severity of bugs | 20% |
-| Documentation | - Clear communication of logic and technical decisions in README | 10% |
-| Testing | - Presence of tests<br>- Quality and robustness of tests | 10% |
+## Project Structure
+
+```
+alpaca-takehome/
+├── backend/                  # (Optional) FastAPI health-check server
+│   ├── main.py
+│   └── requirements.txt
+├── frontend/                 # Next.js application and API routes
+│   ├── app/                  # UI pages and API route definitions
+│   ├── lib/                  # AI and database utilities
+│   ├── prisma/               # Prisma schema
+│   ├── src/generated/prisma/ # Generated Prisma client
+│   ├── public/               # Static assets
+│   ├── styles/               # Global and component styles
+│   └── package.json
+├── .gitignore
+└── README.md
+```
+
+## License
+
+This project is licensed under the MIT License.

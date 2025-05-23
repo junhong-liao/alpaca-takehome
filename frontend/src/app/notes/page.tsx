@@ -17,10 +17,38 @@ export default function NotesPage() {
   const [noteTitle, setNoteTitle] = useState("Session Note");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [showTemplate, setShowTemplate] = useState(false);
-  const DEFAULT_PROMPT = `You're a clinical scribe. Turn these bullet points into a professional ABA session note:`;
+  // Default prompt template for note generation
+  const DEFAULT_PROMPT = `You're a clinical scribe specializing in ABA therapy. Please convert the following bullet points into a professional clinical session note using the template below. Use Markdown formatting with headings, bold text, and bullet lists where indicated.
+
+# Session Note
+**Client:** [Client Name]
+**Date:** [Session Date]
+**Location:** [Location]
+
+## Presenting Information
+- 
+
+## Goals and Objectives
+- 
+
+## Interventions Implemented
+- 
+
+## Progress Towards Goals
+- 
+
+## Recommendations
+- 
+
+Provide clear, concise, and professional language. Fill in each section appropriately based on the bullet points provided.
+`;
   const [promptTemplate, setPromptTemplate] = useState<string>(DEFAULT_PROMPT);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
+  // State and ref for editing the generated note content
+  const [isEditingNote, setIsEditingNote] = useState(false);
+  const [editedNoteText, setEditedNoteText] = useState("");
+  const noteTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const selectedNote = notes?.find((n: any) => n.id === selectedId) || (creating ? null : notes?.[0]);
 
@@ -187,11 +215,46 @@ export default function NotesPage() {
     }
   }
 
+  // Handlers for inline editing of generated note
+  function handleNoteClick() {
+    setIsEditingNote(true);
+    setTimeout(() => noteTextareaRef.current?.focus(), 10);
+  }
+  async function handleNoteBlur() {
+    setIsEditingNote(false);
+    if (selectedNote) {
+      try {
+        const res = await fetch(`/api/notes/${selectedNote.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ generatedNote: editedNoteText }),
+        });
+        if (res.ok) mutate();
+        else console.error('Failed to save edited note');
+      } catch (err) {
+        console.error('Error saving edited note:', err);
+      }
+    }
+  }
+  function handleNoteKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+      noteTextareaRef.current?.blur();
+    }
+  }
+
   useEffect(() => {
     if (creating) {
       textareaRef.current?.focus();
     }
   }, [creating]);
+
+  // Initialize edited note text when a note is selected
+  useEffect(() => {
+    if (selectedNote) {
+      setEditedNoteText(selectedNote.generatedNote || "");
+      setIsEditingNote(false);
+    }
+  }, [selectedNote]);
 
   // Set title when a note is selected
   useEffect(() => {
@@ -316,11 +379,26 @@ export default function NotesPage() {
               )}
             </div>
             <div className="mb-2 text-gray-600 text-xs">Created: {new Date(selectedNote.createdAt).toLocaleString()}</div>
-            <div className="w-full border rounded p-2 min-h-[120px] mb-2 bg-gray-100 text-black">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {selectedNote.generatedNote || ""}
-              </ReactMarkdown>
-            </div>
+            {/* Generated note content: editable on click */}
+            {isEditingNote ? (
+              <textarea
+                ref={noteTextareaRef}
+                className="w-full border rounded p-2 min-h-[120px] mb-2 bg-white text-black"
+                value={editedNoteText}
+                onChange={(e) => setEditedNoteText(e.target.value)}
+                onBlur={handleNoteBlur}
+                onKeyDown={handleNoteKeyDown}
+              />
+            ) : (
+              <div
+                className="w-full border rounded p-2 min-h-[120px] mb-2 bg-gray-100 text-black cursor-text"
+                onClick={handleNoteClick}
+              >
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {selectedNote.generatedNote || ""}
+                </ReactMarkdown>
+              </div>
+            )}
             <div className="flex gap-2 mb-4">
               <button
                 onClick={handleRegenerate}
