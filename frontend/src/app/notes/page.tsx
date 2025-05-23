@@ -18,26 +18,26 @@ export default function NotesPage() {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [showTemplate, setShowTemplate] = useState(false);
   // Default prompt template for note generation
-  const DEFAULT_PROMPT = `You're a clinical scribe specializing in ABA therapy. Please convert the following bullet points into a professional clinical session note using the template below. Use Markdown formatting with headings, bold text, and bullet lists where indicated.
+  const DEFAULT_PROMPT = `You're a clinical scribe specializing in ABA therapy. Please convert the following bullet points into a professional clinical session note using the template below. Use Markdown formatting with bolded headers and section titles, and bullet lists where indicated.
 
-# Session Note
+# **Session Note**
 **Client:** [Client Name]
 **Date:** [Session Date]
 **Location:** [Location]
 
-## Presenting Information
+## **Presenting Information**
 - 
 
-## Goals and Objectives
+## **Goals and Objectives**
 - 
 
-## Interventions Implemented
+## **Interventions Implemented**
 - 
 
-## Progress Towards Goals
+## **Progress Towards Goals**
 - 
 
-## Recommendations
+## **Recommendations**
 - 
 
 Provide clear, concise, and professional language. Fill in each section appropriately based on the bullet points provided.
@@ -422,8 +422,8 @@ Provide clear, concise, and professional language. Fill in each section appropri
         )}
       </main>
       {showTemplate && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded shadow-lg max-w-lg mx-4">
+        <div className="fixed inset-0 bg-transparent flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow-lg w-full max-w-4xl mx-4">
             <h2 className="text-xl font-bold mb-2 text-black">Template Prompt</h2>
             <textarea
               className="w-full bg-gray-100 p-4 rounded text-sm text-black"

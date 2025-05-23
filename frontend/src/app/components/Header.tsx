@@ -1,11 +1,19 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { Inter } from 'next/font/google';
+
+// Load Inter font for branding
+const inter = Inter({ subsets: ['latin'], weight: '700' });
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="bg-white shadow p-4 flex justify-end relative">
+    <header className="bg-white shadow p-4 flex justify-between items-center relative">
+      {/* Brand */}
+      <div className={`${inter.className} text-2xl font-bold lowercase text-black`}>
+        alpaca health
+      </div>
       <button
         onClick={() => setOpen(!open)}
         className="p-2 focus:outline-none"
@@ -27,7 +35,7 @@ export default function Header() {
         </svg>
       </button>
       {open && (
-        <div className="absolute right-4 top-full mt-2 bg-white border rounded shadow-lg w-40">
+        <div className="absolute right-4 top-full mt-1 bg-white border rounded shadow-lg w-40 origin-top-right animate-pop-py">
           <Link href="/admin" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
             Admin Dashboard
           </Link>
